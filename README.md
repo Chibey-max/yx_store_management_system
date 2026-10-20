@@ -50,6 +50,32 @@ cargo build
 cargo run
 ```
 
+## Development workflow
+
+1. Create a branch from `main` (`feat/fr-11-stock-movements`, `fix/...`).
+2. Before pushing, run the same checks as CI:
+
+   ```bash
+   # backend
+   cargo fmt --all && cargo clippy --all-targets -- -D warnings && cargo test
+
+   # frontend
+   cd frontend && pnpm lint && pnpm exec tsc --noEmit && pnpm build
+   ```
+
+3. Open a pull request. The template asks which SRS requirement IDs it covers
+   (FR-xx / NFR-xx) and how they were tested (SRS Part C).
+4. CI must pass before merging:
+   - **Backend CI** (`.github/workflows/backend.yml`): fmt, clippy, tests,
+     release build, `cargo audit` (also runs weekly).
+   - **Frontend CI** (`.github/workflows/frontend.yml`): lint, typecheck,
+     build, `pnpm audit`.
+   - **No AI attribution** (`.github/workflows/attribution.yml`): fails if any
+     commit or the PR description contains AI co-author or "Generated with"
+     lines (e.g. `Co-Authored-By: Claude`). Run it locally with
+     `.github/scripts/check-attribution.sh origin/main..HEAD`.
+5. Dependabot opens weekly dependency update PRs.
+
 ## Documentation
 
 See [`docs/multi_store_retail_management_system_requirements.docx`](docs/multi_store_retail_management_system_requirements.docx)
