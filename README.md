@@ -60,7 +60,7 @@ cargo run
    cargo fmt --all && cargo clippy --all-targets -- -D warnings && cargo test
 
    # frontend
-   cd frontend && pnpm lint && pnpm exec tsc --noEmit && pnpm build
+   cd frontend && pnpm lint && pnpm typecheck && pnpm build
    ```
 
 3. Open a pull request. The template asks which SRS requirement IDs it covers
